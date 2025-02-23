@@ -39,28 +39,35 @@
                 <button type="submit" class="btn btn-primary mx-3 mt-3">Apply</button>
             </form>
         </div>
-        <div class="col-lg-4 col-md-6 p-4">
-            <div class="card border-primary rounded custom-shadow">
-                <img src="../deps/images/goods/green_tea_set.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <a href="../goods/product.html">
-                        <p class="card-title">Green Tea Set</p>
-                    </a>
-                    <p class="card-text text-truncate">A premium green tea set with an elegant teapot and matching cups
-                        for a perfect tea experience.</p>
-                    <p class="product_id">id: 02265</p>
-                    <div class="d-flex justify-content-between">
-                        <p><s>30</s> $</p>
-                        <p><strong>25.00 $</strong></p>
-                        <span class="badge bg-warning text-dark">Discount 16.67 %</span>
-                        <a href="#" class="btn add-to-cart">
-                            <img class="mx-1" src="../deps/icons/cart-plus.svg" alt="Catalog Icon" width="32"
-                                 height="32">
+
+
+        {% for product in goods %}
+            <div class="col-lg-4 col-md-6 p-4">
+                <div class="card border-primary rounded custom-shadow">
+                    <img src="{% static product.image %}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <a href="../goods/product.html">
+                            <p class="card-title">{{ product.name }}</p>
                         </a>
+                        <p class="card-text text-truncate">{{ product.description }}</p>
+                        <p class="product_id">id: 02265</p>
+                        <div class="d-flex justify-content-between">
+                            {#                        <p><s>30</s> $</p>#}
+                            {#                        <p><strong>25.00 $</strong></p>#}
+                            {#                        <span class="badge bg-warning text-dark">Discount 16.67 %</span>#}
+                            <p><strong>{{ product.price }}$</strong></p>
+                            <a href="#" class="btn add-to-cart">
+                                <img class="mx-1" src="{% static 'deps/icons/cart-plus.svg' %}" alt="Catalog Icon"
+                                     width="32"
+                                     height="32">
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endfor %}
+
+
     </div>
 {% endblock %}
 
