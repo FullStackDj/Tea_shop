@@ -37,6 +37,41 @@ $(document).ready(function () {
             },
         });
     });
+
+    $(document).on("click", ".remove-from-cart", function (e) {
+        e.preventDefault();
+
+        var goodsInCartCount = $("#goods-in-cart-count");
+        var cartCount = parseInt(goodsInCartCount.text() || 0);
+
+        var cart_id = $(this).data("cart-id");
+        var remove_from_cart = $(this).attr("href");
+
+        $.ajax({
+            type: "POST",
+            url: remove_from_cart,
+            data: {
+                cart_id: cart_id,
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            },
+            success: function (data) {
+                successMessage.html(data.message);
+                successMessage.fadeIn(400);
+                setTimeout(function () {
+                    successMessage.fadeOut(400);
+                }, 7000);
+
+                cartCount -= data.quantity_deleted;
+                goodsInCartCount.text(cartCount);
+
+                var cartItemsContainer = $("#cart-items-container");
+                cartItemsContainer.html(data.cart_items_html);
+            },
+            error: function (data) {
+                console.log("Error when removing product from cart");
+            },
+        });
+    });
 });
 
 var notification = $('#notification');
