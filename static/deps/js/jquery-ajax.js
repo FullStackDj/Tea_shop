@@ -31,7 +31,6 @@ $(document).ready(function () {
                 var cartItemsContainer = $("#cart-items-container");
                 cartItemsContainer.html(data.cart_items_html);
             },
-
             error: function (data) {
                 console.log("Error adding item to cart");
             },
@@ -72,29 +71,82 @@ $(document).ready(function () {
             },
         });
     });
-});
 
-var notification = $('#notification');
-if (notification.length > 0) {
-    setTimeout(function () {
-        notification.alert('close');
-    }, 7000);
-}
+    $(document).on("click", ".decrement", function () {
+        var url = $(this).data("cart-change-url");
+        var cartID = $(this).data("cart-id");
+        var $input = $(this).closest('.input-group').find('.number');
+        var currentValue = parseInt($input.val());
 
-$('#modalButton').click(function () {
-    $('#exampleModal').appendTo('body');
-    $('#exampleModal').modal('show');
-});
+        if (currentValue > 1) {
+            $input.val(currentValue - 1);
+            updateCart(cartID, currentValue - 1, -1, url);
+        }
+    });
 
-$('#exampleModal .btn-close').click(function () {
-    $('#exampleModal').modal('hide');
-});
+    $(document).on("click", ".increment", function () {
+        var url = $(this).data("cart-change-url");
+        var cartID = $(this).data("cart-id");
+        var $input = $(this).closest('.input-group').find('.number');
+        var currentValue = parseInt($input.val());
 
-$("input[name='requires_delivery']").change(function () {
-    var selectedValue = $(this).val();
-    if (selectedValue === "1") {
-        $("#deliveryAddressField").show();
-    } else {
-        $("#deliveryAddressField").hide();
+        $input.val(currentValue + 1);
+
+        updateCart(cartID, currentValue + 1, 1, url);
+    });
+
+    function updateCart(cartID, quantity, change, url) {
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                cart_id: cartID,
+                quantity: quantity,
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            },
+            success: function (data) {
+                successMessage.html(data.message);
+                successMessage.fadeIn(400);
+                setTimeout(function () {
+                    successMessage.fadeOut(400);
+                }, 7000);
+
+                var goodsInCartCount = $("#goods-in-cart-count");
+                var cartCount = parseInt(goodsInCartCount.text() || 0);
+                cartCount += change;
+                goodsInCartCount.text(cartCount);
+
+                var cartItemsContainer = $("#cart-items-container");
+                cartItemsContainer.html(data.cart_items_html);
+            },
+            error: function (data) {
+                console.log("Error while adding item to the cart");
+            },
+        });
     }
+
+    var notification = $('#notification');
+    if (notification.length > 0) {
+        setTimeout(function () {
+            notification.alert('close');
+        }, 7000);
+    }
+
+    $('#modalButton').click(function () {
+        $('#exampleModal').appendTo('body');
+        $('#exampleModal').modal('show');
+    });
+
+    $('#exampleModal .btn-close').click(function () {
+        $('#exampleModal').modal('hide');
+    });
+
+    $("input[name='requires_delivery']").change(function () {
+        var selectedValue = $(this).val();
+        if (selectedValue === "1") {
+            $("#deliveryAddressField").show();
+        } else {
+            $("#deliveryAddressField").hide();
+        }
+    });
 });
