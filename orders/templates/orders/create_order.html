@@ -15,7 +15,7 @@
             <h3 class="text-center">Order Details</h3>
             <div class="card mb-3">
                 <div class="card-body">
-                    <form action="{% url 'orders:create_order' %} method='POST">
+                    <form action="{% url "orders:create_order" %}" method="post" id="create_order_form">
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -82,6 +82,9 @@
                                            id="id_payment_on_get" value="1">
                                     <label class="form-check-label" for="id_payment_on_get">Cash/Card on
                                         Delivery</label>
+                                    {% if form.payment_on_get.errors %}
+                                        <div class="alert alert-danger alert-dismissible fade show"
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
