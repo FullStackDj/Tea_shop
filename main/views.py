@@ -1,20 +1,22 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
-def index(request):
-    context = {
-        'title': 'Tea shop - Main',
-        'content': 'Tea shop',
-    }
+class IndexView(TemplateView):
+    template_name = 'main/index.html'
 
-    return render(request, 'main/index.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Home'
+        context['content'] = 'Home - Main'
+        return context
 
 
-def about(request):
-    context = {
-        'title': 'Tes shop - About',
-        'content': 'About us',
-        'text_on_page': "This is a very long text about us",
+class AboutView(TemplateView):
+    template_name = 'main/about.html'
 
-    }
-    return render(request, 'main/about.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'About'
+        context['content'] = 'About - Main'
+        context['text_on_page'] = 'Text'
+        return context

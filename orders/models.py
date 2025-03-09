@@ -30,6 +30,7 @@ class Order(models.Model):
         db_table = 'order'
         verbose_name = 'Order'
         verbose_name_plural = 'Orders'
+        ordering = ('id',)
 
     def __str__(self):
         return f'Order #{self.pk} | User {self.user.first_name} {self.user.last_name}'
@@ -48,6 +49,7 @@ class OrderItem(models.Model):
         db_table = 'order_item'
         verbose_name = 'Order item'
         verbose_name_plural = 'Order items'
+        ordering = ('id',)
 
     objects = OrderItemQueryset.as_manager()
 
