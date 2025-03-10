@@ -48,7 +48,8 @@
         <p class="float-left">Total <strong>{{ carts.total_quantity }}</strong> product(s) for</p>
         <h4 class="float-left"><strong>{{ carts.total_price }} $</strong></h4>
     </div>
-</div>{% if carts and not order %}
+</div>
+{% if carts and not order %}
     <a class="btn btn-dark" href="{% url 'orders:create_order' %}">
         Place Order
     </a>
