@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView
+from .models import Page
 
 
 class IndexView(TemplateView):
@@ -6,8 +7,10 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Home'
-        context['content'] = 'Home - Main'
+        page = Page.objects.get(title='Home')
+
+        context['title'] = page.title
+        context['content'] = page.content
         return context
 
 
@@ -16,7 +19,9 @@ class AboutView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'About'
-        context['content'] = 'About - Main'
-        context['text_on_page'] = 'Text'
+        page = Page.objects.get(title='About')
+
+        context['title'] = page.title
+        context['content'] = page.content
+        context['text_on_page'] = page.text_on_page
         return context
