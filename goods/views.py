@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 
 from goods.models import Products
@@ -49,8 +50,7 @@ class ProductView(DetailView):
     context_object_name = 'product'
 
     def get_object(self, queryset=None):
-        product = Products.objects.get(slug=self.kwargs.get(self.slug_url_kwarg))
-        return product
+        return get_object_or_404(Products, slug=self.kwargs.get(self.slug_url_kwarg))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

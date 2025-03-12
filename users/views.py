@@ -24,7 +24,6 @@ class UserLoginView(LoginView):
 
     def form_valid(self, form):
         session_key = self.request.session.session_key
-
         user = form.get_user()
 
         if user:
@@ -35,9 +34,8 @@ class UserLoginView(LoginView):
                     forgot_carts.delete()
                 Cart.objects.filter(session_key=session_key).update(user=user)
 
-                messages.success(self.request, 'You have been logged in.')
-
-                return HttpResponseRedirect(self.get_success_url())
+            messages.success(self.request, 'You have been logged in.')
+            return HttpResponseRedirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -52,10 +50,9 @@ class UserRegistrationView(CreateView):
 
     def form_valid(self, form):
         session_key = self.request.session.session_key
-        user = form.instance
+        user = form.save()
 
         if user:
-            form.save()
             auth.login(self.request, user)
 
         if session_key:
@@ -91,7 +88,7 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, UpdateView):
         context['title'] = 'Profile'
 
         orders = Order.objects.filter(user=self.request.user).prefetch_related(
-            Prefetch('orderitem_set', queryset=OrderItem.objects.select_related('product'), )).order_by('-id')
+            Prefetch('orderitem_set', queryset=OrderItem.objects.select_related('product'))).order_by('-id')
 
         context['orders'] = self.set_get_cache(orders, f'user_{self.request.user.id}_orders', 60 * 2)
         return context
@@ -103,4 +100,7 @@ class UserCartView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Cart'
+        user = self.request.user
+        user_cart = Cart.objects.filter(user=user)
+        context['user_cart'] = user_cart
         return context
