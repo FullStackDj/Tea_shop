@@ -27,7 +27,6 @@ def test_user_registration_view(client):
         'email': 'newuser@example.com',
         'password1': 'testPasswordВ!',
         'password2': 'testPasswordВ!'
-
     })
     assert response.status_code == 302
     assert response.url == reverse('users:profile')
