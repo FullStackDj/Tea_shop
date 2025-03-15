@@ -1,10 +1,18 @@
 body {
-    background-image: url("../images/bg-image.jpg");
+    width: 100%;
+    height: 100%;
+    margin: 0;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
     background-size: cover;
-    height: 100%;
+    background: #00ffebff;
+    transition: background-color 1s ease;
+    overflow-x: hidden;
+}
+
+section {
+    margin-bottom: 50px;
 }
 
 .dropdown-toggle::after {
@@ -105,3 +113,43 @@ body {
     }
 }
 
+.colorPicker {
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    background-color: #4CAF50;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-right: 20px;
+}
+
+.colorPicker-label {
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.colorPicker input {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+}
+
+.colorPicker input[type="color"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+}
+
+.colorPicker:hover {
+    background-color: #51d158;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
